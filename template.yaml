@@ -15,8 +15,8 @@ Resources:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
       CodeUri: hello_world/
-      Handler: app.lambda_handler
-      Runtime: python3.9
+      Handler: app.app
+      Runtime: python3.7
       Architectures:
         - x86_64
       Events:
@@ -25,6 +25,28 @@ Resources:
           Properties:
             Path: /hello
             Method: get
+        GetUser:
+          Type: Api
+          Properties:
+            Path: /user/{id}/
+            Method: get
+        CreateUser:
+          Type: Api
+          Properties:
+            Path: /create
+            Method: post
+        DeleteUser:
+          Type: Api
+          Properties:
+            Path: /userdelete/{id}/
+            Method: delete
+        UpdateUser:
+          Type: Api
+          Properties:
+            Path: /update/{id}
+            Method: post
+
+
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function

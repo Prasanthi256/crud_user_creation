@@ -1,0 +1,147 @@
+{
+	"info": {
+		"_postman_id": "2e1b6911-8316-45fe-b8f8-208d9520f31e",
+		"name": "aws_request",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "https://86uolmgg8a.execute-api.ap-south-1.amazonaws.com/Prod/user/1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://86uolmgg8a.execute-api.ap-south-1.amazonaws.com/Prod/user/1",
+					"protocol": "https",
+					"host": [
+						"86uolmgg8a",
+						"execute-api",
+						"ap-south-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"Prod",
+						"user",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://86uolmgg8a.execute-api.ap-south-1.amazonaws.com/Prod/hello",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://86uolmgg8a.execute-api.ap-south-1.amazonaws.com/Prod/hello",
+					"protocol": "https",
+					"host": [
+						"86uolmgg8a",
+						"execute-api",
+						"ap-south-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"Prod",
+						"hello"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://86uolmgg8a.execute-api.ap-south-1.amazonaws.com/Prod/create",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstname\":\"srinu\",\"lastname\":\"b\",\"emailid\":\"srinu.b@gmail.com\",\"password\":\"srinusrinu\"\r\n}"
+				},
+				"url": {
+					"raw": "https://86uolmgg8a.execute-api.ap-south-1.amazonaws.com/Prod/create",
+					"protocol": "https",
+					"host": [
+						"86uolmgg8a",
+						"execute-api",
+						"ap-south-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"Prod",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://86uolmgg8a.execute-api.ap-south-1.amazonaws.com/Prod/update/4",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstname\": \"srinivas \"\r\n}"
+				},
+				"url": {
+					"raw": "https://86uolmgg8a.execute-api.ap-south-1.amazonaws.com/Prod/update/6",
+					"protocol": "https",
+					"host": [
+						"86uolmgg8a",
+						"execute-api",
+						"ap-south-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"Prod",
+						"update",
+						"6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://86uolmgg8a.execute-api.ap-south-1.amazonaws.com/Prod/userdelete/6",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://86uolmgg8a.execute-api.ap-south-1.amazonaws.com/Prod/userdelete/6",
+					"protocol": "https",
+					"host": [
+						"86uolmgg8a",
+						"execute-api",
+						"ap-south-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"Prod",
+						"userdelete",
+						"6"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

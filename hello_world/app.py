@@ -1,44 +1,134 @@
 import json
+import rds_config
+import  pymysql
+import traceback
+#import connection
+from flask import request
+from flask_lambda import FlaskLambda
+app = FlaskLambda(__name__)
 
-# import requests
+username = rds_config.db_username
+password = rds_config.db_password
+name = rds_config.db_name
+endpoint= rds_config.db_endpoint
+host=rds_config.db_host
 
 
-def lambda_handler(event, context):
-    """Sample pure Lambda function
 
-    Parameters
-    ----------
-    event: dict, required
-        API Gateway Lambda Proxy Input Format
+'''try:
+	conn = pymysql.connect(host=endpoint, user=username, passwd=password, db=name, port=int(host),connect_timeout=5)
+except pymysql.MySQLError as e:
+	print(e)
 
-        Event doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html#api-gateway-simple-proxy-for-lambda-input-format
+print("SUCCESS: Connection to RDS MySQL instance succeeded")'''
 
-    context: object, required
-        Lambda Context runtime methods and attributes
+@app.route('/hello')
+def index():
+	try:
+		conn = pymysql.connect(host=endpoint, user=username, passwd=password, db=name, port=int(host),connect_timeout=5)
+		print("SUCCESS: Connection to RDS MySQL instance succeeded")
+		connection = conn.cursor()
+		connection.execute("select user_id,firstname,lastname,emailid from users")
+		col_names =('user_id','firstname','lastname','emailid')
+		rows=connection.fetchall()
+		query_result = [{col_names:row for col_names,row in zip(col_names,row)}for row in rows]
+		if len(rows) == 0 :
+			query_result = {"message" : "No user entry"}
+	except Exception as e:
+		print(e)
+	finally:
+		connection.close()
+		conn.close()
+	return (
+		json.dumps(query_result, indent=4, sort_keys=True),
+		200,
+		{'Content-Type': 'application/json'}
+		)
 
-        Context doc: https://docs.aws.amazon.com/lambda/latest/dg/python-context-object.html
 
-    Returns
-    ------
-    API Gateway Lambda Proxy Output Format: dict
+@app.route('/user/<int:id>',methods =['GET'])
+def get_user(id):
+	try:
+		conn = pymysql.connect(host=endpoint, user=username, passwd=password, db=name, port=int(host),connect_timeout=5)
+		print("SUCCESS: Connection to RDS MySQL instance succeeded")
+		connection = conn.cursor()
+		connection.execute("select firstname,lastname,emailid from users where  user_id = %s",id)
+		rows=connection.fetchall()
+		col =('firstname','lastname','emailid')
+		if  len(rows) == 1:
+			query_result = dict(zip(col,rows[0]))
+		else:
+			query_result = {"message" : "No data  for that  id"}
+	except Exception:
+		print(traceback.format_exc())
+	finally:
+		connection.close()
+		conn.close()
+	return (
+		json.dumps(query_result,indent=4, sort_keys=True),
+		200,
+		{'Content-Type': 'application/json'}
+	)
 
-        Return doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html
-    """
+@app.route('/create',methods = ['POST'])
+def  create_user():
+	res=(request.json)
+	firstname= res['firstname']
+	lastname= res['lastname']
+	emailid=res['emailid']
+	user_password=res['password']
+	try:
+		conn = pymysql.connect(host=endpoint, user=username, passwd=password, db=name, port=int(host),connect_timeout=5)
+		print("SUCCESS: Connection to RDS MySQL instance succeeded")
+		connection = conn.cursor()
+		connection.execute("insert  into users(firstname,lastname,emailid,password) values (%s, %s, %s, MD5(%s))",(firstname,lastname,emailid,user_password))
+		conn.commit()
+	except Exception as e:
+		print(e)
+	finally:
+		connection.close()
+		conn.close()
+	return json.dumps({"message":"User entry was  created "})
 
-    # try:
-    #     ip = requests.get("http://checkip.amazonaws.com/")
-    # except requests.RequestException as e:
-    #     # Send some context about this error to Lambda Logs
-    #     print(e)
+@app.route('/userdelete/<int:id>', methods= ['DELETE'])
+def  delete_user(id):
+	try:
+		conn = pymysql.connect(host=endpoint, user=username, passwd=password, db=name, port=int(host),connect_timeout=5)
+		print("SUCCESS: Connection to RDS MySQL instance succeeded")
+		connection = conn.cursor()
+		connection.execute("delete from users where  user_id = %s",id)
+		conn.commit()
+	except Exception as e:
+		print(e)
+	finally:
+		connection.close()
+		conn.close()
+	return (
+		json.dumps({"message": "user entry  deleted successfully"})		
+	)
+@app.route('/update/<int:id>', methods = ['POST'])
+def  update_user(id):
+	try:
 
-    #     raise e
+		res=request.json
+		key = list(res.keys())[0]
+		print(key)
+		conn = pymysql.connect(host=endpoint, user=username, passwd=password, db=name, port=int(host),connect_timeout=5)
+		print("SUCCESS: Connection to RDS MySQL instance succeeded")
+		connection=conn.cursor()
+		connection.execute("update  users  set " +key + " = %s where user_id = %s ",(res[key],id))
+		conn.commit()
+	except Exception as e:
+		print(e)
+	finally:
+		connection.close()
+		conn.close()
+	return(
+		json.dumps({"message":"user details updated  successfully"})
+		)
 
-    return {
-        "statusCode": 200,
-        "body": json.dumps(
-            {
-                "message": "hello world",
-                # "location": ip.text.replace("\n", "")
-            }
-        ),
-    }
+
+
+
+#if __name__ == '__main__':
+#    app.run(debug=True)
