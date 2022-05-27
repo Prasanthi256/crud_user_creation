@@ -1,44 +1,21 @@
 {
 	"info": {
-		"_postman_id": "2e1b6911-8316-45fe-b8f8-208d9520f31e",
-		"name": "aws_request",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"_postman_id": "a025d530-fce5-44f3-8795-3607202f864d",
+		"name": "aws_crud_collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20655400"
 	},
 	"item": [
-		{
-			"name": "https://86uolmgg8a.execute-api.ap-south-1.amazonaws.com/Prod/user/1",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "https://86uolmgg8a.execute-api.ap-south-1.amazonaws.com/Prod/user/1",
-					"protocol": "https",
-					"host": [
-						"86uolmgg8a",
-						"execute-api",
-						"ap-south-1",
-						"amazonaws",
-						"com"
-					],
-					"path": [
-						"Prod",
-						"user",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
 		{
 			"name": "https://86uolmgg8a.execute-api.ap-south-1.amazonaws.com/Prod/hello",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://86uolmgg8a.execute-api.ap-south-1.amazonaws.com/Prod/hello",
+					"raw": "https://iwy1rvvzjf.execute-api.ap-south-1.amazonaws.com/Prod/hello",
 					"protocol": "https",
 					"host": [
-						"86uolmgg8a",
+						"iwy1rvvzjf",
 						"execute-api",
 						"ap-south-1",
 						"amazonaws",
@@ -47,6 +24,35 @@
 					"path": [
 						"Prod",
 						"hello"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://iwy1rvvzjf.execute-api.ap-south-1.amazonaws.com/Prod/user?name=ravi",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://iwy1rvvzjf.execute-api.ap-south-1.amazonaws.com/Prod/user?name=ravi",
+					"protocol": "https",
+					"host": [
+						"iwy1rvvzjf",
+						"execute-api",
+						"ap-south-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"Prod",
+						"user"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "ravi"
+						}
 					]
 				}
 			},
@@ -65,13 +71,13 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"firstname\":\"srinu\",\"lastname\":\"b\",\"emailid\":\"srinu.b@gmail.com\",\"password\":\"srinusrinu\"\r\n}"
+					"raw": "{\r\n    \"firstname\":\"ravi\",\"lastname\":\"kumar\",\"emailid\":\"ravi.kumar@gmail.com\",\"password\":\"ravi1\"\r\n}"
 				},
 				"url": {
-					"raw": "https://86uolmgg8a.execute-api.ap-south-1.amazonaws.com/Prod/create",
+					"raw": "https://iwy1rvvzjf.execute-api.ap-south-1.amazonaws.com/Prod/create",
 					"protocol": "https",
 					"host": [
-						"86uolmgg8a",
+						"iwy1rvvzjf",
 						"execute-api",
 						"ap-south-1",
 						"amazonaws",
@@ -98,13 +104,13 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"firstname\": \"srinivas \"\r\n}"
+					"raw": "{\r\n    \"lastname\": \"andrew\"\r\n}"
 				},
 				"url": {
-					"raw": "https://86uolmgg8a.execute-api.ap-south-1.amazonaws.com/Prod/update/6",
+					"raw": "https://iwy1rvvzjf.execute-api.ap-south-1.amazonaws.com/Prod/update/4",
 					"protocol": "https",
 					"host": [
-						"86uolmgg8a",
+						"iwy1rvvzjf",
 						"execute-api",
 						"ap-south-1",
 						"amazonaws",
@@ -113,7 +119,7 @@
 					"path": [
 						"Prod",
 						"update",
-						"6"
+						"4"
 					]
 				}
 			},
@@ -125,10 +131,10 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "https://86uolmgg8a.execute-api.ap-south-1.amazonaws.com/Prod/userdelete/6",
+					"raw": "https://iwy1rvvzjf.execute-api.ap-south-1.amazonaws.com/Prod/userdelete/18",
 					"protocol": "https",
 					"host": [
-						"86uolmgg8a",
+						"iwy1rvvzjf",
 						"execute-api",
 						"ap-south-1",
 						"amazonaws",
@@ -137,7 +143,7 @@
 					"path": [
 						"Prod",
 						"userdelete",
-						"6"
+						"18"
 					]
 				}
 			},

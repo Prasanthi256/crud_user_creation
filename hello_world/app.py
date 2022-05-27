@@ -15,13 +15,6 @@ host=rds_config.db_host
 
 
 
-'''try:
-	conn = pymysql.connect(host=endpoint, user=username, passwd=password, db=name, port=int(host),connect_timeout=5)
-except pymysql.MySQLError as e:
-	print(e)
-
-print("SUCCESS: Connection to RDS MySQL instance succeeded")'''
-
 @app.route('/hello')
 def index():
 	try:
@@ -46,19 +39,21 @@ def index():
 		)
 
 
-@app.route('/user/<int:id>',methods =['GET'])
-def get_user(id):
+@app.route('/user',methods =['GET'])
+def get_user():
+	args = request.args
+	firstname=args.get("name")
 	try:
 		conn = pymysql.connect(host=endpoint, user=username, passwd=password, db=name, port=int(host),connect_timeout=5)
 		print("SUCCESS: Connection to RDS MySQL instance succeeded")
 		connection = conn.cursor()
-		connection.execute("select firstname,lastname,emailid from users where  user_id = %s",id)
+		connection.execute("select firstname,lastname,emailid,user_id from users where  firstname like %s",firstname)
 		rows=connection.fetchall()
-		col =('firstname','lastname','emailid')
+		col =('firstname','lastname','emailid','user_id')
 		if  len(rows) == 1:
 			query_result = dict(zip(col,rows[0]))
 		else:
-			query_result = {"message" : "No data  for that  id"}
+			query_result = {"message" : "No data  for that  users"}
 	except Exception:
 		print(traceback.format_exc())
 	finally:
@@ -81,14 +76,23 @@ def  create_user():
 		conn = pymysql.connect(host=endpoint, user=username, passwd=password, db=name, port=int(host),connect_timeout=5)
 		print("SUCCESS: Connection to RDS MySQL instance succeeded")
 		connection = conn.cursor()
-		connection.execute("insert  into users(firstname,lastname,emailid,password) values (%s, %s, %s, MD5(%s))",(firstname,lastname,emailid,user_password))
-		conn.commit()
+		connection.execute("select count(*) from users  where firstname= %s" ,firstname)
+		rows = connection.fetchall()
+		if (rows[0][0]) == 1 :
+			res={"message":"User entry already exists"}
+		else:
+			connection.execute("insert  into users(firstname,lastname,emailid,password) values (%s, %s, %s, MD5(%s))",(firstname,lastname,emailid,user_password))
+			conn.commit()
+			res={"message":"User entry was  created "}
 	except Exception as e:
 		print(e)
 	finally:
 		connection.close()
 		conn.close()
-	return json.dumps({"message":"User entry was  created "})
+	return (
+		json.dumps(res,indent = 4,sort_keys=True),
+		200,
+		{'Content-Type': 'application/json'})
 
 @app.route('/userdelete/<int:id>', methods= ['DELETE'])
 def  delete_user(id):
@@ -116,19 +120,21 @@ def  update_user(id):
 		conn = pymysql.connect(host=endpoint, user=username, passwd=password, db=name, port=int(host),connect_timeout=5)
 		print("SUCCESS: Connection to RDS MySQL instance succeeded")
 		connection=conn.cursor()
-		connection.execute("update  users  set " +key + " = %s where user_id = %s ",(res[key],id))
-		conn.commit()
+		connection.execute("select count(*) from users where user_id = %s",id)
+		rows=connection.fetchall()
+		if rows[0][0] == 0:
+			result = {'message' : "No entry exists  for that user_id"}
+		else:
+			connection.execute("update  users  set " +key + " = %s where user_id = %s ",(res[key],id))
+			conn.commit()
+			result = {"message" : "user details updated  successfully"}
 	except Exception as e:
 		print(e)
 	finally:
 		connection.close()
 		conn.close()
 	return(
-		json.dumps({"message":"user details updated  successfully"})
+		json.dumps(result)
 		)
 
 
-
-
-#if __name__ == '__main__':
-#    app.run(debug=True)

@@ -28,7 +28,7 @@ Resources:
         GetUser:
           Type: Api
           Properties:
-            Path: /user/{id}/
+            Path: /user
             Method: get
         CreateUser:
           Type: Api
